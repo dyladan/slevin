@@ -5,8 +5,8 @@ import re
 import os
 import requests
 
-chan = "#bookietest"
-nick = "bookiebot"
+chanlist = ["#slevintest","#slevin"]
+nick = "slevin"
 server = "irc.freenode.net"
 
 #os.chdir("/home/user/bookie/bookie")
@@ -34,7 +34,8 @@ def github(s):
       return None
 
 irc = connection.Connection(server=server,nick=nick)
-irc.join(chan)
+for chan in chanlist:
+  irc.join(chan)
 while True:
   raw = irc.listen()
   print raw

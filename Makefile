@@ -11,7 +11,7 @@ run:
 	bin/python bot.py
 
 .PHONY: setup
-setup: sysdeps
+setup:
 	if [ ! -d $(REPO) ]; then\
 		git clone $(BOOKIE) $(REPO);\
 	fi
