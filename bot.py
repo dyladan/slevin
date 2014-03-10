@@ -12,7 +12,6 @@ server = "irc.freenode.net"
 #os.chdir("/home/user/bookie/bookie")
 
 
-os.system("git clone http://github.com/bookieio/bookie.git")
 os.chdir("bookie/bookie")
 
 def github_issue( issue, user="bookieio", repo="bookie" ):
@@ -37,11 +36,12 @@ def github(s):
 irc = connection.Connection(server=server,nick=nick)
 irc.join(chan)
 while True:
-  out = parse.parsemsg(irc.listen())
+  raw = irc.listen()
+  print raw
+  out = parse.parsemsg(raw)
   prefix  = out[0]
   command = out[1]
   args    = out[2]
-  print prefix, command
   if command == 'PRIVMSG':
     if args[0] == irc.nick:
       channel = prefix.split('!')[0]
