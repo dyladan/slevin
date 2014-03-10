@@ -3,9 +3,9 @@ import bot.util.parse as parse
 import re
 import requests
 
-chan = "#bookie"
-nick = "bookiebot"
-server = "irc.freenode.net"
+chan = ""
+nick = ""
+server = ""
 
 def github_issue( issue, user="bookieio", repo="bookie" ):
   r = requests.get("https://api.github.com/repos/%s/%s/issues/%s" % (user,repo,issue))
@@ -27,7 +27,7 @@ def github(s):
       return None
 
 irc = connection.Connection(server=server,nick=nick)
-irc.join("#test")
+irc.join(chan)
 while True:
   out = parse.parsemsg(irc.listen())
   prefix  = out[0]
