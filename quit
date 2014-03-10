@@ -1,0 +1,6 @@
+  def quit(self, reason="GOOD BYE"):
+    data = "QUIT :Bye\r\n"
+    self.s.send(data)
+    print ">", data.rstrip()
+    print "<",self.s.recv(4096)
+    sys.exit(0)
