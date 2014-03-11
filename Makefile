@@ -8,7 +8,7 @@ clean:
 
 .PHONY: run
 run:
-	bin/python bot.py
+	bin/python bot2.py
 
 .PHONY: setup
 setup:

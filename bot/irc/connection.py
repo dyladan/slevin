@@ -64,6 +64,5 @@ class Connection:
       if data[:4] == "PING":
         pong = 'PONG %s' % data[6:]
         self.s.send(pong) #Send back a PONG
-        self._p("> %s" % pong)
       else:
         return data
