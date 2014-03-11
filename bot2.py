@@ -4,8 +4,8 @@ from glob import glob
 import re
 import os
 
-chanlist = ["#slevintest1","#slevin1"]
-nick = "slevin1"
+chanlist = ["#slevintest","#slevin"]
+nick = "slevin"
 server = "irc.freenode.net"
 cmds = dict()
 
