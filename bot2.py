@@ -4,9 +4,14 @@ from glob import glob
 import re
 import os
 
-chanlist = ["#slevintest","#slevin"]
-nick = "slevin"
+chanlist = ["#slevintest1","#slevin1"]
+nick = "slevin1"
 server = "irc.freenode.net"
+cmds = dict()
+
+def command(func):
+  cmds[func.__name__] = func
+
 modules = set(glob(os.path.join('plugins', '*.py')))
 
 for mod in modules:
@@ -34,22 +39,12 @@ while True:
       channel = args[0]
     message = args[1].rstrip().split(" ")
 
-    if message[0] == '.func':
-      if len(message) == 1:
-        irc.privmsg(channel, ".func regex - searches for function definitions using basic regular expressions")
-        continue
-      os.chdir("bookie/bookie")
-      os.system("git pull")
-      functions = find_func(message[1])
-      os.chdir("../../")
-      out = [item for sublist in functions for item in sublist]
-      if len(out) > 5:
-        irc.privmsg(channel, "More than 5 matches. Please refine your search")
-      elif len(out) == 0:
-        irc.privmsg(channel, "No functions named like that")
-      else:
-        for s in out:
-          irc.privmsg(channel,s)
+    if message[0] in cmds:
+      cmds[message[0]](irc, channel, message[1:])
+
+    if message[0] == '.listfunc':
+      irc.privmsg(channel, cmds)
+      continue
 
     #match github issues
     for arg in message:
