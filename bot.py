@@ -1,9 +1,9 @@
 from bot.util.find import find_func
+from bot.util.github import github
 import bot.irc.connection as connection
 import bot.util.parse as parse
 import re
 import os
-import requests
 
 chanlist = ["#slevintest","#slevin"]
 nick = "slevin"
@@ -13,25 +13,6 @@ server = "irc.freenode.net"
 
 
 os.chdir("bookie/bookie")
-
-def github_issue( issue, user="bookieio", repo="bookie" ):
-  r = requests.get("https://api.github.com/repos/%s/%s/issues/%s" % (user,repo,issue))
-  if r.status_code == 200:
-    json = r.json()
-    url = json['html_url']
-    title = json['title']
-    state = json['state']
-    return state + " - " + url + " - " + title
-  else:
-    return None
-
-def github(s):
-  match = re.search(r"(?:^|\s)#?(\d+)\b",s)
-  if match:
-      number = match.group(1)
-      return github_issue(number)
-  else:
-      return None
 
 irc = connection.Connection(server=server,nick=nick)
 for chan in chanlist:
