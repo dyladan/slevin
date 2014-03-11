@@ -35,6 +35,9 @@ while True:
     message = args[1].rstrip().split(" ")
 
     if message[0] == '.func':
+      if len(message) == 1:
+        irc.privmsg(channel, ".func regex - searches for function definitions using basic regular expressions")
+        continue
       os.chdir("bookie/bookie")
       os.system("git pull")
       functions = find_func(message[1])
@@ -42,6 +45,8 @@ while True:
       out = [item for sublist in functions for item in sublist]
       if len(out) > 5:
         irc.privmsg(channel, "More than 5 matches. Please refine your search")
+      elif len(out) == 0:
+        irc.privmsg(channel, "No functions named like that")
       else:
         for s in out:
           irc.privmsg(channel,s)
@@ -51,5 +56,5 @@ while True:
       match = re.match(r"#?(\d+)$", arg)
       if match:
         issue = github_issue(match.group(1))
-        irc.privmsg(channel,issue)
-      #irc.privmsg(channel,github_issue(message[1]))
+        if issue:
+          irc.privmsg(channel,issue)

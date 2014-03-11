@@ -27,8 +27,10 @@ def search_file(path, regex):
         return res
 
 def find_func(s):
-  return rgrep(".", "\s*def\s.*%s.*\(.*:" % s)
-
+  try:
+    return rgrep(".", "\s*def\s.*%s.*\(.*:" % s)
+  except Exception:
+    return []
 
 #function = "get_by_url"
 #print rgrep('.', '\s*def\s.*%s.*:' % function)
