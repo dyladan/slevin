@@ -28,12 +28,11 @@ class Connection:
     self.setnick(nick)
     self.setuser(name)
 
-  def quit(self, reason="GOOD BYE"):
+  def close(self, reason="GOOD BYE"):
     data = "QUIT :Bye\r\n"
     print ">", data.rstrip()
     self.s.send(bytearray(data, "utf-8"))
     self.s.close()
-    sys.exit(0)
 
   def privmsg(self, chan,message):
     data = 'PRIVMSG %s :%s\r\n' % (chan, message)
@@ -56,7 +55,6 @@ class Connection:
     data = 'JOIN %s\r\n' % chan
     self.s.send(data)
     self._p("> %s" % data)
-    self.privmsg(chan,"hello")
 
   def listen(self):
     while True: #While Connection is Active

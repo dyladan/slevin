@@ -3,6 +3,7 @@ from bot.util.parse import parsemsg
 from glob import glob
 import re
 import os
+import sys
 
 chanlist = ["#slevintest","#slevin"]
 nick = "slevin"
@@ -53,3 +54,7 @@ while True:
         issue = github_issue(match.group(1))
         if issue:
           irc.privmsg(channel,issue)
+  if command == 'KICK':
+    if args[1] == irc.nick:
+      irc.join(args[0])
+      irc.privmsg(args[0], "HEY")
