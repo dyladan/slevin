@@ -1,5 +1,6 @@
 import os
 import re
+import string
 @command
 def func(connection, channel, s):
   def rgrep(path, regex):
@@ -35,8 +36,13 @@ def func(connection, channel, s):
 
   os.chdir("bookie/bookie")
   os.system("git pull")
-  print s[0]
-  functions = find_func(s[0])
+  regex = s[0]
+  regex = re.compile(r'\.\*').sub('*',regex)
+  regex = re.compile(r'[^A-Za-z0-9_*^\\.+]+').sub('',regex)
+  regex = re.compile(r'\*').sub('.*', regex)
+  regex = re.compile(r'\^').sub(r'\\b', regex)
+  print regex
+  functions = find_func(regex)
   os.chdir("../../")
   out = [item for sublist in functions for item in sublist]
   if len(out) > 5:

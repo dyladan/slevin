@@ -10,7 +10,7 @@ server = "irc.freenode.net"
 cmds = dict()
 
 def command(func):
-  cmds[func.__name__] = func
+  cmds["." + func.__name__] = func
 
 modules = set(glob(os.path.join('plugins', '*.py')))
 
