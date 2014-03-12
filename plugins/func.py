@@ -1,6 +1,6 @@
 import os
 import re
-import string
+#import string
 @command
 def func(connection, channel, nick, s):
   def rgrep(path, regex):
@@ -35,7 +35,6 @@ def func(connection, channel, nick, s):
       return []
 
   os.chdir("bookie/bookie")
-  os.system("git pull")
   regex = s[0]
   regex = re.compile(r'\.\*').sub('*',regex)
   regex = re.compile(r'[^A-Za-z0-9_*^\\.+]+').sub('',regex)

@@ -11,11 +11,14 @@ nick = "slevin"
 server = "irc.freenode.net"
 cmds = dict()
 securecmds = dict()
+rehooks = dict()
 
 def command(func):
   cmds["." + func.__name__] = func
 def secure(func):
   securecmds["." + func.__name__] = func
+def regex(func):
+  rehooks[func.__name__] = func
 
 modules = set(glob(os.path.join('plugins', '*.py')))
 
@@ -37,14 +40,12 @@ def privmsg(nick, channel, command, message):
 
     if message[0] in cmds:
       cmds[message[0]](irc, channel, nick, message[1:])
+      return
 
-    #match github issues
-    for arg in message:
-      match = re.match(r"#?(\d+)$", arg)
-      if match:
-        issue = github_issue(match.group(1))
-        if issue:
-          irc.privmsg(channel,issue)
+    matchstr = " ".join(message)
+    for hook in rehooks:
+      if rehooks[hook](irc, channel, nick, message):
+        return
 
 
 
@@ -67,7 +68,7 @@ while True:
 
     thread.start_new_thread(privmsg, (nick, channel, command, message))
 
-  if command == 'KICK':
+  elif command == 'KICK':
     if args[1] == irc.nick:
       irc.join(args[0])
       irc.privmsg(args[0], "HEY")
