@@ -4,6 +4,7 @@ from glob import glob
 import re
 import os
 import sys
+import thread
 
 chanlist = ["#slevintest","#slevin"]
 nick = "slevin"
@@ -28,10 +29,23 @@ irc = Connection(server=server,nick=nick)
 for chan in chanlist:
   irc.join(chan)
 
+
+def privmsg(nick, channel, command, message):
+
+    if message[0] in cmds:
+      cmds[message[0]](irc, channel, message[1:])
+
+    #match github issues
+    for arg in message:
+      match = re.match(r"#?(\d+)$", arg)
+      if match:
+        issue = github_issue(match.group(1))
+        if issue:
+          irc.privmsg(channel,issue)
+
+
+
 while True:
-  #raw = irc.listen()
-  #print raw
-  #out = parsemsg(raw)
   out = irc.listen()
   prefix  = out[0]
   command = out[1]
@@ -48,18 +62,7 @@ while True:
 
     irc.log(channel, nick, " ".join(message))
 
-    if message[0] in cmds:
-      cmds[message[0]](irc, channel, message[1:])
-      continue
-
-    #match github issues
-    for arg in message:
-      match = re.match(r"#?(\d+)$", arg)
-      if match:
-        issue = github_issue(match.group(1))
-        if issue:
-          irc.privmsg(channel,issue)
-
+    thread.start_new_thread(privmsg, (nick, channel, command, message))
 
   if command == 'KICK':
     if args[1] == irc.nick:

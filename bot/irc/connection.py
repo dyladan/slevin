@@ -11,6 +11,10 @@ __init__
 """
 import socket
 import sys
+from bot.util.parse import parsemsg
+import sqlite3
+import re
+import datetime
 
 class Connection:
   "Create a connection to an irc channel"
@@ -20,6 +24,13 @@ class Connection:
     self.name = name
     self.s = socket.socket()
     self.connect(server, port, nick, name)
+    self.logdb = "log.db"
+    self.table_name = re.sub(r"[\W]+", "", server)
+    conn = sqlite3.connect(self.logdb)
+    sql = "create table if not exists " + self.table_name + " (utc timestamp, chan text, nick text, msg text)"
+    print sql
+    conn.execute(sql)
+    conn.commit()
 
   def connect(self, server, port=6667, nick="bookiebot", name="Alan Turing"):
     "Connect and return a socket"
@@ -28,15 +39,24 @@ class Connection:
     self.setnick(nick)
     self.setuser(name)
 
+  def log(self, chan, nick, msg):
+    sql = "insert into %s VALUES (?, ?, ?, ?)" % self.table_name
+    conn = sqlite3.connect(self.logdb)
+    conn.execute(sql, (datetime.datetime.now(), chan, nick, msg))
+    conn.commit()
+
+
   def close(self, reason="GOOD BYE"):
     data = "QUIT :Bye\r\n"
     print ">", data.rstrip()
     self.s.send(bytearray(data, "utf-8"))
+    self.s.recv(4096)
     self.s.close()
 
   def privmsg(self, chan,message):
     data = 'PRIVMSG %s :%s\r\n' % (chan, message)
     self.s.send(data)
+    self.log(chan, self.nick, message)
     self._p("> %s" % data)
 
   def setnick(self, nick):
@@ -63,4 +83,5 @@ class Connection:
         pong = 'PONG %s' % data[6:]
         self.s.send(pong) #Send back a PONG
       else:
-        return data
+        out = parsemsg(data)
+        return out
