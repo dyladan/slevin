@@ -10,9 +10,12 @@ chanlist = ["#slevintest","#slevin"]
 nick = "slevin"
 server = "irc.freenode.net"
 cmds = dict()
+securecmds = dict()
 
 def command(func):
   cmds["." + func.__name__] = func
+def secure(func):
+  securecmds["." + func.__name__] = func
 
 modules = set(glob(os.path.join('plugins', '*.py')))
 

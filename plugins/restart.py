@@ -1,4 +1,4 @@
-@command
+@secure
 def restart(con, chan, nick, args):
   con.close()
   python = sys.executable
