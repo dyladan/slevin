@@ -1,5 +1,5 @@
 @command
-def list(con, chan, args):
+def list(con, chan, nick, args):
   s = []
   for i in cmds.iterkeys():
     s.append(i)

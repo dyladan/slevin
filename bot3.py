@@ -33,7 +33,7 @@ for chan in chanlist:
 def privmsg(nick, channel, command, message):
 
     if message[0] in cmds:
-      cmds[message[0]](irc, channel, message[1:])
+      cmds[message[0]](irc, channel, nick, message[1:])
 
     #match github issues
     for arg in message:

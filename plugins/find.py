@@ -2,7 +2,7 @@ import os
 import re
 import string
 @command
-def func(connection, channel, s):
+def func(connection, channel, nick, s):
   def rgrep(path, regex):
       regObj = re.compile(regex)
       python = re.compile(r".*\.py$")
