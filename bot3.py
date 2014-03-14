@@ -35,9 +35,10 @@ for chan in chanlist:
 
 
 def privmsg(nick, channel, command, message):
+    cmd = message[0][1:]
 
-    if "."+message[0] in cmds:
-      cmds[message[0]](irc, channel, nick, message[1:])
+    if cmd in cmds:
+      cmds[cmd](irc, channel, nick, message[1:])
       return
 
     for hook in rehooks:
