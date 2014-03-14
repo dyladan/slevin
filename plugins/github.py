@@ -14,7 +14,7 @@ def gh_issues(con, chan, nick, msg):
     else:
       return None
   for arg in msg:
-    match = re.match(r"#?(\d+)$", arg)
+    match = re.match(r"#(\d+)$", arg)
     #match = re.match("(\d+)", arg)
     if match:
       print match.group(1)

@@ -6,7 +6,7 @@ import os
 import sys
 import thread
 
-chanlist = ["#slevintest","#slevin"]
+chanlist = ["#ubuntu-us-mi", "#bookie", "#slevin"]
 nick = "slevin"
 server = "irc.freenode.net"
 cmds = dict()
