@@ -5,7 +5,7 @@ import sys
 import thread
 
 chanlist = ["#ubuntu-us-mi", "#bookie", "#slevin"]
-nick = "slevin"
+nick = "bookiebot"
 server = "irc.freenode.net"
 cmds = dict()
 securecmds = dict()
@@ -35,7 +35,7 @@ for chan in chanlist:
 
 
 def privmsg(nick, channel, command, message):
-    cmd = re.compile(r"^\.").sub('', message[0])
+    cmd = "cmd_"+re.compile(r"^\.").sub('', message[0])
 
     if cmd in cmds:
       cmds[cmd](irc, channel, nick, message[1:])
