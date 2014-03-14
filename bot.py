@@ -35,7 +35,7 @@ for chan in chanlist:
 
 
 def privmsg(nick, channel, command, message):
-    cmd = message[0][1:]
+    cmd = re.compile(r"^\.").sub('', message[0])
 
     if cmd in cmds:
       cmds[cmd](irc, channel, nick, message[1:])
