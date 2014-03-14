@@ -1,3 +1,3 @@
 @command
-def reflect(connection, channel, nick, s):
+def cmd_echo(connection, channel, nick, s):
   connection.privmsg(channel, " ".join(s))

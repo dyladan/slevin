@@ -2,7 +2,7 @@ import requests
 import re
 
 @regex
-def gh_issues(con, chan, nick, msg):
+def bookie_issues(con, chan, nick, msg):
   def github_issue( issue, user="bookieio", repo="bookie" ):
     r = requests.get("https://api.github.com/repos/%s/%s/issues/%s" % (user,repo,issue))
     if r.status_code == 200:
