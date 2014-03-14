@@ -11,7 +11,8 @@ __init__
 """
 import socket
 import sys
-from bot.util.parse import parsemsg
+import bot.util
+from bot.util import parsemsg
 import sqlite3
 import re
 import datetime
@@ -55,9 +56,9 @@ class Connection:
 
   def privmsg(self, chan,message):
     data = 'PRIVMSG %s :%s\r\n' % (chan, message)
-    self.s.send(data)
+    self.s.send(bytearray(data, "utf-8"))
     self.log(chan, self.nick, message)
-    self._p("> %s" % data)
+    self._p("> %s" % bytearray(data, "utf-8"))
 
   def setnick(self, nick):
     data = 'NICK %s\r\n' % nick
@@ -78,7 +79,8 @@ class Connection:
 
   def listen(self):
     while True: #While Connection is Active
-      data = self.s.recv (4096) #Make Data the Receive Buffer
+      raw = self.s.recv (4096) #Make Data the Receive Buffer
+      data = bot.util.decode(raw)
       if data[:4] == "PING":
         pong = 'PONG %s' % data[6:]
         self.s.send(pong) #Send back a PONG
