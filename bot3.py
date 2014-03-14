@@ -1,7 +1,5 @@
 from bot.irc.connection import Connection
-from bot.util.parse import parsemsg
 from glob import glob
-import re
 import os
 import sys
 import thread
@@ -14,9 +12,9 @@ securecmds = dict()
 rehooks = dict()
 
 def command(func):
-  cmds["." + func.__name__] = func
+  cmds[func.__name__] = func
 def secure(func):
-  securecmds["." + func.__name__] = func
+  securecmds[func.__name__] = func
 def regex(func):
   rehooks[func.__name__] = func
 
@@ -38,11 +36,10 @@ for chan in chanlist:
 
 def privmsg(nick, channel, command, message):
 
-    if message[0] in cmds:
+    if "."+message[0] in cmds:
       cmds[message[0]](irc, channel, nick, message[1:])
       return
 
-    matchstr = " ".join(message)
     for hook in rehooks:
       if rehooks[hook](irc, channel, nick, message):
         return

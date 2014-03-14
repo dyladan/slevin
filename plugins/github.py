@@ -7,19 +7,23 @@ def gh_issues(con, chan, nick, msg):
     r = requests.get("https://api.github.com/repos/%s/%s/issues/%s" % (user,repo,issue))
     if r.status_code == 200:
       json = r.json()
-      url = json['html_url']
-      title = json['title']
-      state = json['state']
-      return state + " - " + url + " - " + title
+      return json
     else:
       return None
   for arg in msg:
     match = re.match(r"#(\d+)$", arg)
-    #match = re.match("(\d+)", arg)
     if match:
-      print match.group(1)
       issue = github_issue(match.group(1))
+      out = " - ".join([issue['state'], issue['title'], issue['html_url']])
       if issue:
-        irc.privmsg(channel,issue)
+        irc.privmsg(channel,out)
       return True
+    match_gh = re.match(r".*Bookie/issues/(\d+)", arg)
+    if match_gh:
+      issue = github_issue(match_gh.group(1))
+      out = " - ".join([issue['state'], issue['title']])
+      if issue:
+        irc.privmsg(channel, out)
+      return True
+
   return False
