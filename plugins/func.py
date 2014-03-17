@@ -3,6 +3,9 @@ import re
 #import string
 @command
 def cmd_func(connection, channel, nick, s):
+  if s == []:
+    connection.privmsg(channel, "Searches most recent copy of bookie repo for function definitions; Update repo with .pull; Syntax: .func <regex>")
+    return
   def rgrep(path, regex):
       regObj = re.compile(regex)
       python = re.compile(r".*\.py$")
