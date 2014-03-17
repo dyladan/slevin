@@ -3,6 +3,7 @@ import re
 #import string
 @command
 def cmd_func(connection, channel, nick, s):
+  """Searches most recent copy of bookie repo for function definitions; Update repo with .pull; Syntax: .func <regex>"""
   if s == []:
     connection.privmsg(channel, "Searches most recent copy of bookie repo for function definitions; Update repo with .pull; Syntax: .func <regex>")
     return
