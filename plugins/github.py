@@ -10,6 +10,7 @@ def bookie_issues(con, chan, nick, msg):
       return json
     else:
       return None
+
   for arg in msg:
     match = re.match(r"#(\d+)$", arg)
     if match:
@@ -18,6 +19,7 @@ def bookie_issues(con, chan, nick, msg):
       if issue:
         irc.privmsg(channel,out)
       return True
+
     match_gh = re.match(r".*bookie/(?:issues|pull)/(\d+)", arg, flags=re.IGNORECASE)
     if match_gh:
       issue = github_issue(match_gh.group(1))
