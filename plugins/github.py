@@ -18,7 +18,7 @@ def bookie_issues(con, chan, nick, msg):
       if issue:
         irc.privmsg(channel,out)
       return True
-    match_gh = re.match(r".*Bookie/issues/(\d+)", arg)
+    match_gh = re.match(r".*bookie/(?:issues|pull)/(\d+)", arg, flags=re.IGNORECASE)
     if match_gh:
       issue = github_issue(match_gh.group(1))
       out = " - ".join([issue['state'], issue['title']])
